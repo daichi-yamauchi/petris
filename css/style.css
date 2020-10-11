@@ -1,0 +1,35 @@
+body {
+  background: #fff;
+}
+
+#fieldBox {
+  position: relative;
+}
+
+#back {
+  background: #111;
+  position: absolute;
+  z-index: 1;
+}
+
+#field {
+  position: absolute;
+  z-index: 2;
+}
+#next {
+  background: #111;
+  vertical-align: top;
+}
+#hold {
+  background: #111;
+  vertical-align: top;
+}
+
+#gameover {
+  position: absolute;
+  
+  vertical-align: top;
+  background: white;
+  z-index: 3;
+}
+
