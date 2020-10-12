@@ -14,6 +14,8 @@ export default class Game {
     this.holdMino = null;
     this.holdFlag = true; // ホールドフラグ trueでホールド可能
     this.keyState = {};
+    this.score = 0;
+
   }
 
   /*
@@ -50,7 +52,8 @@ export default class Game {
       this.field.blocks[block[1]][block[0]] = this.mino.color;
     });
     delete this.mino;
-    this.field.deleteLine();
+    const delLines = this.field.deleteLine();
+    this.scoreAdd(gmCf.scoreMap[delLines]);
     this.holdFlag = true;
   }
 
@@ -157,6 +160,11 @@ export default class Game {
       [2 - displayMino.center[0], 1.5 - displayMino.center[1]],
       displayMino.blocks
     ).forEach((block) => drawBlock(block, displayMino.color, "hold", 0.5));
+  }
+
+  scoreAdd(value) {
+    this.score += value;
+    document.getElementById("score").innerHTML = `${this.score}`;
   }
 
   /*

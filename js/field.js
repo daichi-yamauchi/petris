@@ -55,6 +55,7 @@ export default class Field {
       clearDraw("field");
       this.draw();
     }
+    return deleteNum;
   }
 
   /*

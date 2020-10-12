@@ -9,6 +9,7 @@ const game = {
   fieldScale: 1,
   nextScale: 0.5,
   holdScale: 0.5,
+  scoreMap: [0, 10, 20, 40, 100],
 };
 
 const display = {

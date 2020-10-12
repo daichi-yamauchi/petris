@@ -7,7 +7,7 @@ import { canvasResize, createBack } from "./functions.js";
 (async () => {
 
   canvasResize();
-    createBack();
+  createBack();
 
   const game = new Game();
   await game.start();
