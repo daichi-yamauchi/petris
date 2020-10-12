@@ -28,7 +28,7 @@ function blockSize() {
     document.documentElement.clientHeight * 0.9 -
     document.querySelector("div.howto").clientHeight;
   const fieldW =
-    (document.documentElement.clientWidth * 0.9 * game.fieldSize[0]) / nX;
+    (document.documentElement.clientWidth * 0.8 * game.fieldSize[0]) / nX;
   if (fieldW / nX < fieldH / nY) return fieldW / nX;
   else return fieldH / nY;
 }

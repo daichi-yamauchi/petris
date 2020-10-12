@@ -8,7 +8,6 @@ body {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
-
 div.header {
   font-size: 3vw;
   text-align: center;
@@ -34,6 +33,9 @@ div.field {
   /* background: cyan; */
   margin: 1% 1%;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #back {
@@ -48,6 +50,21 @@ div.field {
   position: absolute;
   margin: auto;
   z-index: 2;
+}
+
+#gameover {
+  font-size: 8vw;
+  z-index: 3;
+  display: inline-block;
+  color: #990000;
+  text-shadow: 3px 3px 9px #ffffff, -3px 3px 9px #ffffff, 3px -3px 9px #ffffff,
+    -3px -3px 9px #ffffff, 3px 0px 9px #ffffff, 0px 3px 9px #ffffff,
+    -3px 0px 9px #ffffff, 0px -3px 9px #ffffff;
+  transition: opacity 0.3s;
+}
+
+.hide {
+  opacity: 0;
 }
 
 div.info {
@@ -95,13 +112,4 @@ div.howto > .header {
 div.howtodis {
   font-size: 1.8vw;
   margin-top: 5px;
-}
-
-
-#gameover {
-  position: absolute;
-
-  vertical-align: top;
-  background: white;
-  z-index: 3;
 }

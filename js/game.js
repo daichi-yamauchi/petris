@@ -190,7 +190,7 @@ export default class Game {
       this.field.blocks[i] = new Array(gmCf.fieldSize[0]).fill('gray');
       clearDraw("field");
       this.field.draw();
-      
     }
+    document.getElementById("gameover").classList.remove("hide");
   }
 }
