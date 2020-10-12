@@ -1,4 +1,4 @@
-import { game as gameConf } from "./config.js";
+import { gmCf } from "./config.js";
 import { clearDraw, drawBlock, blocksPos } from "./functions.js";
 
 export default class Petrimino {
@@ -120,7 +120,7 @@ export default class Petrimino {
     this.field.draw();
     blocksPos(this.position, this.blocks).forEach((block) => {
       drawBlock(
-        [block[0], block[1] - gameConf.hideFieldHeight],
+        [block[0], block[1] - gmCf.hideFieldHeight],
         this.color,
         "field"
       );
@@ -151,10 +151,10 @@ export default class Petrimino {
   async fall() {
     while (true) {
       await new Promise((resolve) =>
-        setTimeout(resolve, gameConf.fallCountInt)
+        setTimeout(resolve, gmCf.fallCountInt)
       );
-      this.fallCount += gameConf.fallCountInt;
-      if (this.fallCount >= gameConf.fallInt) {
+      this.fallCount += gmCf.fallCountInt;
+      if (this.fallCount >= gmCf.fallInt) {
         if (!this.down()) return; // 落下できない=ブロックが固定されるときにresolveを返す。
         this.fallCount = 0;
       }
@@ -184,15 +184,15 @@ export default class Petrimino {
 
   // ↓が押されたときの動作メソッド
   moveD() {
-    this.fallCount = gameConf.fallInt;
+    this.fallCount = gmCf.fallInt;
   }
 
   // 一瞬で落下させるメソッド
   bottom() {
     while (this.down())
       setTimeout(
-        () => (this.fallCount = gameConf.fallInt),
-        gameConf.fallCountInt
+        () => (this.fallCount = gmCf.fallInt),
+        gmCf.fallCountInt
       );
   }
 

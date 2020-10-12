@@ -1,17 +1,4 @@
-import * as conf from "./config.js";
-
-const canvas = {
-  back: document.getElementById("back"),
-  field: document.getElementById("field"),
-  next: document.getElementById("next"),
-  hold: document.getElementById("hold"),
-};
-const ctx = {
-  back: canvas.back.getContext("2d"),
-  field: canvas.field.getContext("2d"),
-  next: canvas.next.getContext("2d"),
-  hold: canvas.hold.getContext("2d"),
-};
+import { cnv, cnvStl, ctx, gmCf, dpCf, fdCf } from "./config.js";
 
 /*
 キャンバスの調整
@@ -20,27 +7,50 @@ const ctx = {
 */
 export const canvasResize = () => {
   // 背景キャンバス
-  canvas.back.width = conf.game.fieldSize[0] * conf.display.blockSize;
-  canvas.back.height = conf.game.fieldSize[1] * conf.display.blockSize;
+  cnv.back.setAttribute("width", cnvStl.fieldW);
+  cnv.back.setAttribute("height", cnvStl.fieldH);
 
   // フィールドキャンバス
-  canvas.field.width = conf.game.fieldSize[0] * conf.display.blockSize;
-  canvas.field.height = conf.game.fieldSize[1] * conf.display.blockSize;
+  cnv.field.setAttribute("width", cnvStl.fieldW);
+  cnv.field.setAttribute("height", cnvStl.fieldH);
 
-  // 次のミノのキャンバス
-  canvas.next.width = 5 * conf.display.blockSize * conf.display.nextScale;
-  canvas.next.height =
-    4 *
-      conf.game.numNextMino *
-      conf.display.blockSize *
-      conf.display.nextScale +
-    1;
-  ctx.next.scale(conf.display.nextScale, conf.display.nextScale);
+  // 次のミノのキャンバス\
+  cnv.next.setAttribute("width", cnvStl.nextW);
+  cnv.next.setAttribute("height", cnvStl.nextH);
+  ctx.next.scale(dpCf.nextScale, dpCf.nextScale);
 
   // ホールドミノのキャンバス
-  canvas.hold.width = 5 * conf.display.blockSize * conf.display.holdScale;
-  canvas.hold.height = 4 * conf.display.blockSize * conf.display.holdScale;
-  ctx.hold.scale(conf.display.holdScale, conf.display.holdScale);
+  cnv.hold.setAttribute("width", cnvStl.holdW);
+  cnv.hold.setAttribute("Height", cnvStl.holdH);
+  ctx.hold.scale(dpCf.holdScale, dpCf.holdScale);
+
+  divResize();
+  
+};
+
+const divResize = () => {
+
+
+  // 背景キャンバス
+  const field = document.querySelector("div.field");
+  field.style.cssText = `flex-basis: ${cnvStl.fieldW}px; height: ${cnvStl.fieldH}px`;
+  
+  // console.log(res)
+  // field.setAttribute("height", cnvStl.fieldH);
+
+  // フィールドキャンバス
+  // cnv.field.setAttribute("width", cnvStl.fieldW);
+  // cnv.field.setAttribute("height", cnvStl.fieldH);
+
+  // 次のミノのキャンバス\
+  cnv.next.setAttribute("width", cnvStl.nextW);
+  cnv.next.setAttribute("height", cnvStl.nextH);
+  ctx.next.scale(dpCf.nextScale, dpCf.nextScale);
+
+  // ホールドミノのキャンバス
+  cnv.hold.setAttribute("width", cnvStl.holdW);
+  cnv.hold.setAttribute("Height", cnvStl.holdH);
+  ctx.hold.scale(dpCf.holdScale, dpCf.holdScale);
 };
 
 /*
@@ -49,24 +59,18 @@ export const canvasResize = () => {
 export const createBack = () => {
   ctx.back.beginPath();
   // 縦線
-  for (let i = 1; i < conf.game.fieldSize[0]; i++) {
-    ctx.back.moveTo(conf.display.blockSize * i, 0);
-    ctx.back.lineTo(
-      conf.display.blockSize * i,
-      conf.display.blockSize * conf.game.fieldSize[1]
-    );
+  for (let i = 1; i < gmCf.fieldSize[0]; i++) {
+    ctx.back.moveTo(dpCf.blockSize * i, 0);
+    ctx.back.lineTo(dpCf.blockSize * i, dpCf.blockSize * gmCf.fieldSize[1]);
   }
   // 横線
-  for (let i = 1; i < conf.game.fieldSize[1]; i++) {
-    ctx.back.moveTo(0, conf.display.blockSize * i);
-    ctx.back.lineTo(
-      conf.display.blockSize * conf.game.fieldSize[0],
-      conf.display.blockSize * i
-    );
+  for (let i = 1; i < gmCf.fieldSize[1]; i++) {
+    ctx.back.moveTo(0, dpCf.blockSize * i);
+    ctx.back.lineTo(dpCf.blockSize * gmCf.fieldSize[0], dpCf.blockSize * i);
   }
   ctx.back.closePath();
-  ctx.back.strokeStyle = conf.field.strokeColor;
-  ctx.back.lineWidth = conf.field.lineWidth;
+  ctx.back.strokeStyle = fdCf.strokeColor;
+  ctx.back.lineWidth = fdCf.lineWidth;
   ctx.back.stroke();
 };
 
@@ -75,27 +79,27 @@ export const clearDraw = (canvasName) => {
   ctx[canvasName].clearRect(
     0,
     0,
-    canvas[canvasName].width / conf.display[canvasName + "Scale"],
-    canvas[canvasName].height / conf.display[canvasName + "Scale"]
+    cnv[canvasName].width / dpCf[canvasName + "Scale"],
+    cnv[canvasName].height / dpCf[canvasName + "Scale"]
   );
 };
 
 // ブロックをキャンバスへ描画するメソッド
 export const drawBlock = (position, color, ctxName) => {
   ctx[ctxName].fillStyle = color;
-  ctx[ctxName].strokeStyle = conf.display.blockStroke;
-  ctx[ctxName].lineWidth = conf.display.blockLineWidth;
+  ctx[ctxName].strokeStyle = dpCf.blockStroke;
+  ctx[ctxName].lineWidth = dpCf.blockLineWidth;
   ctx[ctxName].fillRect(
-    position[0] * conf.display.blockSize,
-    position[1] * conf.display.blockSize,
-    conf.display.blockSize,
-    conf.display.blockSize
+    position[0] * dpCf.blockSize,
+    position[1] * dpCf.blockSize,
+    dpCf.blockSize,
+    dpCf.blockSize
   );
   ctx[ctxName].strokeRect(
-    position[0] * conf.display.blockSize,
-    position[1] * conf.display.blockSize,
-    conf.display.blockSize,
-    conf.display.blockSize
+    position[0] * dpCf.blockSize,
+    position[1] * dpCf.blockSize,
+    dpCf.blockSize,
+    dpCf.blockSize
   );
 };
 
@@ -107,3 +111,5 @@ export const blocksPos = (position, blocks) => {
   });
   return result;
 };
+
+export { cnv };

@@ -1,4 +1,4 @@
-import { game as gameConf } from "./config.js";
+import { gmCf } from "./config.js";
 import Field from "./field.js";
 import Petrimino from "./petrimino.js";
 import { clearDraw, drawBlock, blocksPos } from "./functions.js";
@@ -6,8 +6,8 @@ import { clearDraw, drawBlock, blocksPos } from "./functions.js";
 export default class Game {
   constructor() {
     this.field = new Field();
-    this.correct = new Array(gameConf.numMinoType).fill(1);
-    this.nextMinos = new Array(gameConf.numNextMino)
+    this.correct = new Array(gmCf.numMinoType).fill(1);
+    this.nextMinos = new Array(gmCf.numNextMino)
       .fill(0)
       .map(() => this.corRandom());
     // 最初のみ実行、ミノの順番をランダムに生成
@@ -37,7 +37,7 @@ export default class Game {
         if (this.checkGameOver2()) gameOverFlag = true;
         this.killPetrimino();
         await new Promise((resolve) =>
-          setTimeout(resolve, gameConf.nextMinoInt)
+          setTimeout(resolve, gmCf.nextMinoInt)
         );
       } else this.hold();
       if(gameOverFlag) return;
@@ -110,7 +110,7 @@ export default class Game {
     const otherSum = sum - this.correct[result];
     this.correct = this.correct.map((v, i) => {
       if (i === result) return v / 2;
-      else return (v * (gameConf.numMinoType / otherSum + 1)) / 2;
+      else return (v * (gmCf.numMinoType / otherSum + 1)) / 2;
     });
     return result;
   }
@@ -175,7 +175,7 @@ export default class Game {
    */
   checkGameOver2() {
     return !blocksPos(this.mino.position, this.mino.blocks).every(
-      (block) => block[1] > gameConf.hideFieldHeight
+      (block) => block[1] > gmCf.hideFieldHeight
     );
   }
 
@@ -185,9 +185,9 @@ export default class Game {
    * 
    */
   async gameOver() {
-    for(let i = this.field.blocks.length; i >= gameConf.hideFieldHeight; i--) {
+    for(let i = this.field.blocks.length; i >= gmCf.hideFieldHeight; i--) {
       await new Promise((resolve) => setTimeout(resolve, 50));
-      this.field.blocks[i] = new Array(gameConf.fieldSize[0]).fill('gray');
+      this.field.blocks[i] = new Array(gmCf.fieldSize[0]).fill('gray');
       clearDraw("field");
       this.field.draw();
       

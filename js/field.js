@@ -1,11 +1,11 @@
-import { game as gameConf } from "./config.js";
+import { gmCf } from "./config.js";
 import { clearDraw, drawBlock } from "./functions.js";
 
 // フィールドオブジェクト
 export default class Field {
   constructor() {
     this.blocks = this.createBlocksArray(
-      gameConf.fieldSize[1] + gameConf.hideFieldHeight
+      gmCf.fieldSize[1] + gmCf.hideFieldHeight
     );
   }
 
@@ -13,7 +13,7 @@ export default class Field {
   createBlocksArray(rowNum) {
     let result = [];
     for (let i = 0; i < rowNum; i++) {
-      result[i] = Array(gameConf.fieldSize[0]).fill(null);
+      result[i] = Array(gmCf.fieldSize[0]).fill(null);
     }
     return result;
   }
@@ -24,7 +24,7 @@ export default class Field {
     this.blocks.forEach((row, y) => {
       row.forEach((color, x) => {
         if (color) {
-          drawBlock([x, y - gameConf.hideFieldHeight], color, "field");
+          drawBlock([x, y - gmCf.hideFieldHeight], color, "field");
         }
       });
     });
@@ -35,8 +35,8 @@ export default class Field {
     let result;
     if (
       x < 0 ||
-      x > gameConf.fieldSize[0] - 1 ||
-      y > gameConf.fieldSize[1] + gameConf.hideFieldHeight - 1
+      x > gmCf.fieldSize[0] - 1 ||
+      y > gmCf.fieldSize[1] + gmCf.hideFieldHeight - 1
     )
       result = 1;
     else if (this.blocks[y][x]) result = 1;
@@ -48,7 +48,7 @@ export default class Field {
   deleteLine() {
     this.blocks = this.blocks.filter((row) => row.includes(null));
     const deleteNum =
-      gameConf.fieldSize[1] + gameConf.hideFieldHeight - this.blocks.length;
+      gmCf.fieldSize[1] + gmCf.hideFieldHeight - this.blocks.length;
     console.log(deleteNum);
     if (deleteNum) {
       this.blocks.unshift(...this.createBlocksArray(deleteNum));
