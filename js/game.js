@@ -15,7 +15,6 @@ export default class Game {
     this.holdFlag = true; // ホールドフラグ trueでホールド可能
     this.keyState = {};
     this.score = 0;
-
   }
 
   /*
@@ -30,7 +29,8 @@ export default class Game {
     const inputId = this.InputKey.bind(this);
     document.addEventListener("keyup", this.upKey.bind(this));
     while (true) {
-      if (!this.mino) this.mino = new Petrimino(this.next(), this);
+      if (!this.mino)
+        this.mino = new Petrimino(this.next(), this, gmCf.fallInt);
       if (this.checkGameOver1()) gameOverFlag = true;
       document.addEventListener("keydown", inputId);
       await this.mino.fall();
@@ -38,11 +38,10 @@ export default class Game {
       if (!this.mino.holdFlag) {
         if (this.checkGameOver2()) gameOverFlag = true;
         this.killPetrimino();
-        await new Promise((resolve) =>
-          setTimeout(resolve, gmCf.nextMinoInt)
-        );
+        gmCf.fallInt = gmCf.fallInt >= 200 ? gmCf.fallInt - 10 : gmCf.fallInt;
+        await new Promise((resolve) => setTimeout(resolve, gmCf.nextMinoInt));
       } else this.hold();
-      if(gameOverFlag) return;
+      if (gameOverFlag) return;
     }
   }
 
@@ -190,12 +189,12 @@ export default class Game {
   /*
    *  ゲームオーバーの演出
    *    ・下からグレーのブロックを積み上げ
-   * 
+   *
    */
   async gameOver() {
-    for(let i = this.field.blocks.length; i >= gmCf.hideFieldHeight; i--) {
+    for (let i = this.field.blocks.length; i >= gmCf.hideFieldHeight; i--) {
       await new Promise((resolve) => setTimeout(resolve, 50));
-      this.field.blocks[i] = new Array(gmCf.fieldSize[0]).fill('gray');
+      this.field.blocks[i] = new Array(gmCf.fieldSize[0]).fill("gray");
       clearDraw("field");
       this.field.draw();
     }

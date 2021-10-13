@@ -2,7 +2,7 @@ import { gmCf } from "./config.js";
 import { clearDraw, drawBlock, blocksPos } from "./functions.js";
 
 export default class Petrimino {
-  constructor(index, game) {
+  constructor(index, game, fallInt) {
     const mino = Petrimino.minoList(index);
     this.blocks = mino.blocks;
     this.position = mino.position;
@@ -14,6 +14,7 @@ export default class Petrimino {
     this.fallCount = 0;
     this.game = game;
     this.field = game.field;
+    this.fallInt = fallInt;
     this.draw();
   }
 
@@ -150,11 +151,9 @@ export default class Petrimino {
   // 一定時間ごとに降下するメソッド
   async fall() {
     while (true) {
-      await new Promise((resolve) =>
-        setTimeout(resolve, gmCf.fallCountInt)
-      );
+      await new Promise((resolve) => setTimeout(resolve, gmCf.fallCountInt));
       this.fallCount += gmCf.fallCountInt;
-      if (this.fallCount >= gmCf.fallInt) {
+      if (this.fallCount >= this.fallInt) {
         if (!this.down()) return; // 落下できない=ブロックが固定されるときにresolveを返す。
         this.fallCount = 0;
       }
@@ -184,16 +183,13 @@ export default class Petrimino {
 
   // ↓が押されたときの動作メソッド
   moveD() {
-    this.fallCount = gmCf.fallInt;
+    this.fallCount = this.fallInt;
   }
 
   // 一瞬で落下させるメソッド
   bottom() {
     while (this.down())
-      setTimeout(
-        () => (this.fallCount = gmCf.fallInt),
-        gmCf.fallCountInt
-      );
+      setTimeout(() => (this.fallCount = this.fallInt), gmCf.fallCountInt);
   }
 
   // 回転させるメソッド
